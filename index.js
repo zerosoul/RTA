@@ -9,17 +9,15 @@ var config = {
     host: "localhost:"+(process.env.PORT || 5000),
     dashboardEndpoint: "/dashboard"
 };
-// the object that will hold information about the active users currently
-// on the site
+//存储访问者的统计信息
 var visitorsData = {};
 
 app.set('port', (process.env.PORT || 5000));
 
-// serve the static assets (js/dashboard.js and css/dashboard.css)
-// from the public/ directory
+// 静态化文件
 app.use(express.static(path.join(__dirname, 'public/')));
 
-// serve the index.html page when someone visits any of the following endpoints:
+// 设置测试页的路由：
 //    1. /
 //    2. /about
 //    3. /contact
@@ -27,7 +25,7 @@ app.get(/\/(about|contact)?$/, function(req, res) {
   res.sendFile(path.join(__dirname, 'views/index.html'));
 });
 
-// serve up the dashboard when someone visits /dashboard
+// 设置控制台页面的路由
 app.get('/dashboard', function(req, res) {
   res.sendFile(path.join(__dirname, 'views/dashboard.html'));
 });
@@ -36,24 +34,24 @@ io.on('connection', function(socket) {
   if (socket.handshake.headers.host === config.host
 	&& socket.handshake.headers.referer.indexOf(config.host + config.dashboardEndpoint) > -1) {
 
-	  // if someone visits '/dashboard' send them the computed visitor data
+	  // 刚进来时，发送一遍统计信息
 	  io.emit('updated-stats', Util.computeStats(visitorsData));
 
 	}
 
-	// a user has visited our page - add them to the visitorsData object
+	// 来客人啦，接客啦~~~
 	socket.on('visitor-data', function(data) {
 	  visitorsData[socket.id] = data;
 
-	  // compute and send visitor data to the dashboard when a new user visits our page
+	  // 更新统计数据
 	  io.emit('updated-stats', Util.computeStats(visitorsData));
 	});
 
 	socket.on('disconnect', function() {
-	  // a user has left our page - remove them from the visitorsData object
+	  // 用户离开页面了，删除对应信息
 	  delete visitorsData[socket.id];
 
-	  // compute and send visitor data to the dashboard when a user leaves our page
+	  // 更新统计数据
 	  io.emit('updated-stats', Util.computeStats(visitorsData));
 	});
 });

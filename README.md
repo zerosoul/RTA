@@ -7,5 +7,7 @@ Real Time Analytics
 # Local Run
 ## Clone to local
 `git clone https://github.com/zerosoul/RTA.git`
-## Direct to dir && Run
-`cd RTA && npm start`
+## Direct to dir && Init
+`cd RTA && npm install`
+## Run
+`npm start`

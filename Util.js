@@ -1,4 +1,4 @@
-// wrapper function to compute the stats and return a object with the updated stats
+// 暴露的函数
 function computeStats(visitorsData){
   return {
     pages: computePageCounts(visitorsData),
@@ -7,9 +7,9 @@ function computeStats(visitorsData){
   };
 }
 
-// get the total number of users on each page of our site
+// 获取单独页面的访客数
 function computePageCounts(visitorsData) {
-  // sample data in pageCounts object:
+  // 举个例子:
   // { "/": 13, "/about": 5 }
   var pageCounts = {};
   for (var key in visitorsData) {
@@ -23,13 +23,13 @@ function computePageCounts(visitorsData) {
   return pageCounts;
 }
 
-// get the total number of users per referring site
+// 获取来源相同的访客数
 function computeRefererCounts(visitorsData) {
-  // sample data in referrerCounts object:
-  // { "http://twitter.com/": 3, "http://stackoverflow.com/": 6 }
+  // 举个例子:
+  // { "http://example.com/": 3, "http://stackoverflow.com/": 6 }
   var referrerCounts = {};
   for (var key in visitorsData) {
-    var referringSite = visitorsData[key].referringSite || '(direct)';
+    var referringSite = visitorsData[key].referringSite || '(直接访问)';
     if (referringSite in referrerCounts) {
       referrerCounts[referringSite]++;
     } else {
@@ -39,7 +39,7 @@ function computeRefererCounts(visitorsData) {
   return referrerCounts;
 }
 
-// get the total active users on our site
+// 获取在线访客数
 function getActiveUsers(visitorsData) {
   return Object.keys(visitorsData).length;
 }
