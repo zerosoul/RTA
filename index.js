@@ -3,9 +3,12 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
-var config = require('./config.js');
 var Util = require('./Util.js');
 
+var config = {
+    host: "localhost:"+(process.env.PORT || 5000),
+    dashboardEndpoint: "/dashboard"
+};
 // the object that will hold information about the active users currently
 // on the site
 var visitorsData = {};
