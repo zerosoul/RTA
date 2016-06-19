@@ -4,11 +4,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
 var Util = require('./Util.js');
-
-var config = {
-    host: "localhost:"+(process.env.PORT || 5000),
-    dashboardEndpoint: "/dashboard"
-};
+// 获取配置信息
+var config = require('./CONFIG.js');
 //存储访问者的统计信息
 var visitorsData = {};
 
